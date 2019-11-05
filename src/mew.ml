@@ -7,10 +7,16 @@
  * This file is a part of mew.
  *)
 
-module Make (Key:Key.S) (Concurrent:Concurrent.S) =
+module Make (Modal:Modal.S) (Concurrent:Concurrent.S) =
 struct
-  type t= {
-    mode: Mode.t
-  }
+
+  class edit state= object
+    val state= state
+
+  end
+
+  class state= object(self)
+    method edit= new edit self
+  end
 end
 

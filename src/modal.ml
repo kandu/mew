@@ -1,5 +1,5 @@
 (*
- * mode.ml
+ * modal.ml
  * -----------
  * Copyright : (c) 2019, ZAN DoYe <zandoye@gmail.com>
  * Licence   : MIT
@@ -8,10 +8,7 @@
  *)
 
 module type S = sig
-  type t
-  type modes
-
-  val name : t -> string
-  val compare : t -> t -> int
+  module Key : Key.S
+  module Mode : Mode.S
 end
 
