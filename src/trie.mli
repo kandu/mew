@@ -30,6 +30,9 @@ module type S =
 
     (** returns the sub node associated with the path *)
     val sub: 'a node -> path list -> 'a node option
+
+    (** [is_leaf node] returns whether the [node] is leaf *)
+    val is_leaf: 'a node -> bool
   end
 
 module Make (H : Hashtbl.HashedType): S with type path:= H.t

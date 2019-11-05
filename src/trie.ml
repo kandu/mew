@@ -69,5 +69,7 @@ module Make (H:Hashtbl.HashedType): (S with type path:= H.t) = struct
     | hd::tl-> match Path.find node.next hd with
       | child-> sub child tl
       | exception Not_found-> None
+
+  let is_leaf node= Path.length node.next = 0
 end
 
