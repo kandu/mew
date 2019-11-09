@@ -177,8 +177,23 @@ struct
         | Custom f-> f (); sources
       in
       let rec listen sources mem_key last node=
-        get_key sources >>= fun (key, sources)->
-        Queue.add key mem_key;
+        match node with
+        | Some node->
+          Thread.pick
+            [ (Thread.sleep self#timeout >>=
+                fun ()-> Thread.return None);
+              get_key sources >>= fun (key, sources)->
+                Thread.return (Some (key, sources))
+              ]
+          >>= (function
+            | Some (key, sources)->
+              try_matching sources mem_key last node key
+            | None-> skip_matching sources mem_key last)
+        | None-> let node= self#bindings in
+          get_key sources >>= fun (key, sources)->
+          Queue.add key mem_key;
+          try_matching sources mem_key last node key
+      and try_matching sources mem_key last node key=
         match Mode.KeyTrie.sub node [key] with
         | Some node->
           let last=
@@ -187,18 +202,20 @@ struct
               Some (Queue.copy mem_key, action)
             | None-> last
           in
-          listen sources mem_key last node
+          listen sources mem_key last (Some node)
         | None->
-          match last with
-          | Some (seq, action)->
-            Utils.Queue.drop (Queue.length seq) mem_key;
-            let sources= perform action sources in
-            listen (mem_key::sources) (Queue.create ()) None self#bindings
-          | None->
-            output_seq o mem_key >>= fun ()->
-            listen sources (Queue.create()) None self#bindings
+          skip_matching sources mem_key last
+      and skip_matching sources mem_key last=
+        match last with
+        | Some (seq, action)->
+          Utils.Queue.drop (Queue.length seq) mem_key;
+          let sources= perform action sources in
+          listen (mem_key::sources) (Queue.create ()) None None
+        | None->
+          output_seq o mem_key >>= fun ()->
+          listen sources (Queue.create()) None None
       in
-      Thread.async (fun ()-> listen [] (Queue.create ()) None self#bindings)
+      Thread.async (fun ()-> listen [] (Queue.create ()) None None)
   end
 
   class state modes= object(self)
