@@ -11,14 +11,17 @@ module type S = sig
   type path
   type 'a node
   val create : 'a option -> 'a node
-  val get : 'a node -> path list -> 'a option
-  val set : 'a node -> path list -> 'a -> unit
-  val unset : 'a node -> path list -> unit
-  val sub: 'a node -> path list -> 'a node option
+  val get : 'a node -> path -> 'a option
+  val set : 'a node -> path -> 'a -> unit
+  val unset : 'a node -> path -> unit
+  val sub: 'a node -> path -> 'a node option
+  val is_leaf: 'a node -> bool
 end
 
-module Make (H:Hashtbl.HashedType): (S with type path:= H.t) = struct
+module Make (H:Hashtbl.HashedType): (S with type path= H.t list) = struct
   module Path = Hashtbl.Make(H)
+
+  type path= H.t list
 
   type 'a node= {
     mutable value: 'a option;

@@ -20,7 +20,7 @@ module type S = sig
     val pick : 'a t list -> 'a t
     val choose : 'a t list -> 'a t
 
-    val async : 'a t-> unit
+    val async : (unit -> unit t)-> unit
     val cancel : 'a t-> unit
 
     val sleep : float -> unit t
@@ -30,6 +30,7 @@ module type S = sig
 
   module MsgBox : sig
     type 'a t
+    val create : unit -> 'a t
     val put : 'a t -> 'a -> unit Thread.t
     val get : 'a t -> 'a Thread.t
   end

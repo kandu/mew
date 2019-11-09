@@ -9,6 +9,6 @@
 
 module type S = sig
   module Key : Key.S
-  module Mode : Mode.S
+  module Mode : module type of Mode.Make(Key)
 end
 

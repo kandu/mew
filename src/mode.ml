@@ -8,10 +8,47 @@
  *)
 
 module type S = sig
-  type t
+  type name
+  type t= {
+    name: name;
+    timeout: float option;
+  }
+
   type modes
 
-  val name : t -> string
+  val name : t -> name
   val compare : t -> t -> int
+  val default_mode : modes -> (name * t)
+end
+
+module Make(Key:Key.S) = struct
+  module KeyTrie = Trie.Make(Key)
+
+  type name= String.t
+
+  type action=
+    | Switch of name
+    | Key of Key.t
+    | KeySeq of Key.t Queue.t
+    | Custom of (unit -> unit)
+
+  type t= {
+    name: name;
+    timeout: float option;
+    bindings: action KeyTrie.node;
+  }
+
+  module Modes = Map.Make(String)
+  type modes= name Modes.t
+
+  let name m= m.name
+  let timeout m= m.timeout
+  let bindings m= m.bindings
+  let compare m1 m2= compare m1.name m2.name
+
+  let default_mode modes= Modes.bindings modes |> List.hd
+
+  let bind mode keyseq action= KeyTrie.set mode.bindings keyseq action
+  let unbind mode keyseq= KeyTrie.unset mode.bindings keyseq
 end
 
