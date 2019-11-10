@@ -7,6 +7,11 @@
  * This file is a part of mew.
  *)
 
+module Concurrent = Concurrent
+module Modal = Modal
+module Mode = Mode
+module Key = Key
+
 module Make (Modal:Modal.S) (Concurrent:Concurrent.S) =
 struct
 
