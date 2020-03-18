@@ -33,8 +33,6 @@ module type S = sig
   val modifier : key:t -> modifier:modifier -> bool
 
   val compare : t -> t -> int
-  val compare_code : code -> code -> int
-  val compare_modifier : modifier -> modifier -> int
 
   val to_string : t -> string
 

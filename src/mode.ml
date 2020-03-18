@@ -7,24 +7,15 @@
  * This file is a part of mew.
  *)
 
-module type S = sig
-  type name
-  type t= {
-    name: name;
-    timeout: float option;
-  }
-
-  type modes
-
-  val name : t -> name
+module type Name = sig
+  type t
   val compare : t -> t -> int
-  val default_mode : modes -> (name * t)
 end
 
-module Make(Key:Key.S) = struct
+module Make(Key:Key.S) (Name:Name) = struct
   module KeyTrie = Trie.Make(Key)
 
-  type name= String.t
+  type name= Name.t
 
   type action=
     | Switch of name
@@ -38,7 +29,7 @@ module Make(Key:Key.S) = struct
     bindings: action KeyTrie.node;
   }
 
-  module Modes = Map.Make(String)
+  module Modes = Map.Make(Name)
   type modes= name Modes.t
 
   let name m= m.name
