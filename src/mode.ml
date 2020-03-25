@@ -30,7 +30,7 @@ module Make(Key:Key.S) (Name:Name) = struct
   }
 
   module Modes = Map.Make(Name)
-  type modes= name Modes.t
+  type modes= t Modes.t
 
   let name m= m.name
   let timeout m= m.timeout
