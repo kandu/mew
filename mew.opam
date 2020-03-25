@@ -4,7 +4,7 @@ authors: [ "ZAN DoYe" ]
 homepage: "https://github.com/kandu/mew"
 bug-reports: "https://github.com/kandu/mew/issues"
 license: "MIT"
-dev-repo: "https://github.com/kandu/mew.git"
+dev-repo: "git+https://github.com/kandu/mew.git"
 build: [
   ["dune" "build" "-p" name "-j" jobs]
   ["dune" "runtest" "-p" name "-j" jobs] {with-test & (ocaml:version >= "4.04.0")}
@@ -16,6 +16,6 @@ depends: [
   "ppx_expect" {with-test}
 ]
 
-synopsis: ""
+synopsis: "Modal editing witch"
 description: """
 """
