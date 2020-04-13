@@ -1,3 +1,13 @@
+(*
+ * utils.ml
+ * -----------
+ * Copyright : (c) 2019 - 2020, ZAN DoYe <zandoye@gmail.com>
+ * Licence   : MIT
+ *
+ * This file is a part of mew.
+ * This module implements strict impure trie tree data structure.
+ *)
+
 module Queue = struct
   let rec drop n q=
     if n > 0 then
