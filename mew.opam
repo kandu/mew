@@ -7,15 +7,14 @@ license: "MIT"
 dev-repo: "git+https://github.com/kandu/mew.git"
 build: [
   ["dune" "build" "-p" name "-j" jobs]
-  ["dune" "runtest" "-p" name "-j" jobs] {with-test & (ocaml:version >= "4.04.0")}
 ]
 depends: [
-  "ocaml" {>= "4.03.0"}
+  "ocaml" {>= "4.02.3"}
   "result"
-  "dune" {build}
-  "ppx_expect" {with-test}
+  "trie"
+  "dune" {>= "1.1.0"}
 ]
 
 synopsis: "Modal editing witch"
 description: """
-"""
+This is the core module of mew, a general modal editing engine generator."""
