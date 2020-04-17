@@ -8,5 +8,4 @@ You can provide your `Key`, `Mode`, `Concurrent` modules to define the real worl
 
 The core compoment support recursive key mapping ossociated with user provided modes. 
 
-After the core component is generated, you may extended it with a translater to interpret user key sequence, so you'll get a complete modal editing engine.
-
+After the core component is generated, you may extend it with a translater to interpret user key sequence, so you'll get a complete modal editing engine.
