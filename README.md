@@ -1,5 +1,7 @@
 # mew — Modal Editing Witch
 
+[![Build Status](https://travis-ci.org/kandu/mew.svg?branch=master)](https://travis-ci.org/kandu/mew)
+
 This is the core module of mew, a general modal editing engine generator.
 
 ## Usage
